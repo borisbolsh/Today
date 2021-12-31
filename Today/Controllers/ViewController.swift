@@ -26,22 +26,32 @@ final class ViewController: UIViewController {
 
 }
 
+// MARK: - UITableViewDataSource
+
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ItemTableViewCell.preferredHeight
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "text \(indexPath.row)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.identfier, for: indexPath) as! ItemTableViewCell
+        
+        cell.configure(with: "Test \(indexPath.row)", date: "test date \(indexPath.row)")
         return cell
     }
 }
 
+// MARK: - UITableViewDelegate
 extension ViewController: UITableViewDelegate {
     
 }
+
+// MARK: - Setup UI
 
 private extension ViewController {
     func setupTableView() {
@@ -49,6 +59,8 @@ private extension ViewController {
         self.tableView.dataSource = self
         self.tableView.delegate = self
 
+        tableView.register(ItemTableViewCell.self,
+                           forCellReuseIdentifier: ItemTableViewCell.identfier)
     }
     
 }
