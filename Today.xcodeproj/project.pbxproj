@@ -11,9 +11,11 @@
 		4574D45A277F2DBE00447EA2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574D459277F2DBE00447EA2 /* Constants.swift */; };
 		458ED55A277E0AE900E2ED26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458ED559277E0AE900E2ED26 /* AppDelegate.swift */; };
 		458ED55C277E0AE900E2ED26 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458ED55B277E0AE900E2ED26 /* SceneDelegate.swift */; };
-		458ED55E277E0AE900E2ED26 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458ED55D277E0AE900E2ED26 /* ViewController.swift */; };
+		458ED55E277E0AE900E2ED26 /* ReminderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458ED55D277E0AE900E2ED26 /* ReminderListViewController.swift */; };
 		458ED563277E0AEA00E2ED26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 458ED562277E0AEA00E2ED26 /* Assets.xcassets */; };
 		458ED566277E0AEA00E2ED26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 458ED564277E0AEA00E2ED26 /* LaunchScreen.storyboard */; };
+		45D999FE27887E2B00828AEF /* ReminderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D999FD27887E2B00828AEF /* ReminderDetailViewController.swift */; };
+		45D99A002788817A00828AEF /* ReminderDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D999FF2788817A00828AEF /* ReminderDetailCell.swift */; };
 		45E10404277E0E59004C9AE4 /* Reminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10403277E0E59004C9AE4 /* Reminder.swift */; };
 		45E10407277E27D0004C9AE4 /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E10406277E27D0004C9AE4 /* ItemTableViewCell.swift */; };
 /* End PBXBuildFile section */
@@ -24,10 +26,12 @@
 		458ED556277E0AE900E2ED26 /* Today.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Today.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		458ED559277E0AE900E2ED26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		458ED55B277E0AE900E2ED26 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		458ED55D277E0AE900E2ED26 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		458ED55D277E0AE900E2ED26 /* ReminderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderListViewController.swift; sourceTree = "<group>"; };
 		458ED562277E0AEA00E2ED26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		458ED565277E0AEA00E2ED26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		458ED567277E0AEA00E2ED26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		45D999FD27887E2B00828AEF /* ReminderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailViewController.swift; sourceTree = "<group>"; };
+		45D999FF2788817A00828AEF /* ReminderDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderDetailCell.swift; sourceTree = "<group>"; };
 		45E10403277E0E59004C9AE4 /* Reminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminder.swift; sourceTree = "<group>"; };
 		45E10406277E27D0004C9AE4 /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,7 +58,8 @@
 		4574D458277F145E00447EA2 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				458ED55D277E0AE900E2ED26 /* ViewController.swift */,
+				458ED55D277E0AE900E2ED26 /* ReminderListViewController.swift */,
+				45D999FD27887E2B00828AEF /* ReminderDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				45E10406277E27D0004C9AE4 /* ItemTableViewCell.swift */,
+				45D999FF2788817A00828AEF /* ReminderDetailCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -195,9 +201,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				4574D457277F04B300447EA2 /* UIView+ext.swift in Sources */,
-				458ED55E277E0AE900E2ED26 /* ViewController.swift in Sources */,
+				45D999FE27887E2B00828AEF /* ReminderDetailViewController.swift in Sources */,
+				458ED55E277E0AE900E2ED26 /* ReminderListViewController.swift in Sources */,
 				458ED55A277E0AE900E2ED26 /* AppDelegate.swift in Sources */,
 				45E10407277E27D0004C9AE4 /* ItemTableViewCell.swift in Sources */,
+				45D99A002788817A00828AEF /* ReminderDetailCell.swift in Sources */,
 				4574D45A277F2DBE00447EA2 /* Constants.swift in Sources */,
 				458ED55C277E0AE900E2ED26 /* SceneDelegate.swift in Sources */,
 				45E10404277E0E59004C9AE4 /* Reminder.swift in Sources */,
@@ -345,7 +353,7 @@
 				INFOPLIST_FILE = Today/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -373,7 +381,7 @@
 				INFOPLIST_FILE = Today/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

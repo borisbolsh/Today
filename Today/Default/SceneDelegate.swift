@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         
-        let navVC = UINavigationController(rootViewController: ViewController())
+        let navVC = UINavigationController(rootViewController: ReminderListViewController())
 //        navVC.navigationBar.prefersLargeTitles = true
 //        navVC.viewControllers.first?.navigationItem.largeTitleDisplayMode = .always
         window.rootViewController = navVC

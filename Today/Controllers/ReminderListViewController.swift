@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ReminderListViewController.swift
 //  Today
 //
 //  Created by Boris Bolshakov on 30.12.21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class ReminderListViewController: UIViewController {
 
     private let tableView = UITableView()
     
@@ -16,6 +16,7 @@ final class ViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         setupTableView()
+        title = "TodayApp"
     }
 
     override func viewDidLayoutSubviews() {
@@ -28,9 +29,9 @@ final class ViewController: UIViewController {
 
 // MARK: - UITableViewDataSource
 
-extension ViewController: UITableViewDataSource {
+extension ReminderListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return Reminder.testData.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -41,19 +42,28 @@ extension ViewController: UITableViewDataSource {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.identfier, for: indexPath) as! ItemTableViewCell
         
-        cell.configure(with: "Test \(indexPath.row)", date: "test date \(indexPath.row)")
+        let reminder = Reminder.testData[indexPath.row]
+        
+        cell.configure(with: reminder.title, date: reminder.dueDate.description, isComplete: reminder.isComplete)
         return cell
     }
 }
 
 // MARK: - UITableViewDelegate
-extension ViewController: UITableViewDelegate {
+extension ReminderListViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = ReminderDetailViewController()
+        vc.configure(with: Reminder.testData[indexPath.row])
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 // MARK: - Setup UI
 
-private extension ViewController {
+private extension ReminderListViewController {
     func setupTableView() {
         view.addSubview(self.tableView)
         self.tableView.dataSource = self

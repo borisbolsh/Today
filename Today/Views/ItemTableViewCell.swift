@@ -12,10 +12,12 @@ final class ItemTableViewCell: UITableViewCell {
     static let identfier = "ItemTableViewCell"
     static let preferredHeight: CGFloat = 80
     
+    typealias DoneButtonAction = () -> Void
+    var doneButtonAction: DoneButtonAction?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
+        label.numberOfLines = 1
         label.font = .systemFont(ofSize: 17, weight: .regular)
         return label
     }()
@@ -27,7 +29,7 @@ final class ItemTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let chechboxButton: UIButton = {
+    private let doneButton: UIButton = {
         let button = UIButton()
         let image = UIImage(systemName: "circle")
         button.contentVerticalAlignment = .fill
@@ -35,6 +37,8 @@ final class ItemTableViewCell: UITableViewCell {
         button.setImage(image, for: .normal)
         button.tintColor = .systemBlue
         button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(doneButtonTriggered), for: .touchUpInside)
+
         return button
     }()
     
@@ -43,7 +47,7 @@ final class ItemTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(chechboxButton)
+        contentView.addSubview(doneButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(dateLabel)
     }
@@ -56,24 +60,24 @@ final class ItemTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         let btnSize: CGFloat = contentView.height / 2
-        chechboxButton.frame = CGRect(
+        doneButton.frame = CGRect(
             x: Padding.ten,
             y: (contentView.height - btnSize) / 2,
             width: btnSize,
             height: btnSize
         )
-        chechboxButton.layer.cornerRadius = btnSize / 2
-        chechboxButton.layer.masksToBounds = true
+        doneButton.layer.cornerRadius = btnSize / 2
+        doneButton.layer.masksToBounds = true
         
         titleLabel.frame = CGRect(
-            x: chechboxButton.right + Padding.ten,
+            x: doneButton.right + Padding.ten,
             y: Padding.ten,
             width: contentView.width - btnSize - Padding.twenty,
             height: 30
         )
         
         dateLabel.frame = CGRect(
-            x: chechboxButton.right + Padding.ten,
+            x: doneButton.right + Padding.ten,
             y: titleLabel.bottom,
             width: contentView.width - btnSize - Padding.twenty,
             height: 30
@@ -82,9 +86,21 @@ final class ItemTableViewCell: UITableViewCell {
     }
     
 
-    func configure(with title: String, date: String) {
+    func configure(with title: String, date: String, isComplete: Bool) {
         titleLabel.text = title
         dateLabel.text = date
+        if isComplete {
+            doneButton.setImage(UIImage(systemName: "circle.fill"), for: .normal) 
+        }
     }
     
+}
+
+// MARK: - Actions
+extension ItemTableViewCell {
+    
+    @objc func doneButtonTriggered() {
+        print("tapped")
+        doneButtonAction?()
+    }
 }
