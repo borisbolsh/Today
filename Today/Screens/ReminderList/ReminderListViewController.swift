@@ -10,7 +10,8 @@ import UIKit
 final class ReminderListViewController: UIViewController {
 
     private let tableView = UITableView()
-    
+    private var reminderListDataSource: ReminderListDataSource?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,28 +28,6 @@ final class ReminderListViewController: UIViewController {
 
 }
 
-// MARK: - UITableViewDataSource
-
-extension ReminderListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Reminder.testData.count
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ItemTableViewCell.preferredHeight
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: ItemTableViewCell.identfier, for: indexPath) as! ItemTableViewCell
-        
-        let reminder = Reminder.testData[indexPath.row]
-        
-        cell.configure(with: reminder.title, date: reminder.dueDate.description, isComplete: reminder.isComplete)
-        return cell
-    }
-}
-
 // MARK: - UITableViewDelegate
 extension ReminderListViewController: UITableViewDelegate {
     
@@ -58,19 +37,25 @@ extension ReminderListViewController: UITableViewDelegate {
         vc.configure(with: Reminder.testData[indexPath.row])
         
         self.navigationController?.pushViewController(vc, animated: true)
+        
     }
+    
 }
 
 // MARK: - Setup UI
-
 private extension ReminderListViewController {
     func setupTableView() {
         view.addSubview(self.tableView)
-        self.tableView.dataSource = self
+        
+        reminderListDataSource = ReminderListDataSource()
+        tableView.dataSource = reminderListDataSource
+        
         self.tableView.delegate = self
 
         tableView.register(ItemTableViewCell.self,
                            forCellReuseIdentifier: ItemTableViewCell.identfier)
+        
+        tableView.rowHeight = ItemTableViewCell.preferredHeight
     }
     
 }

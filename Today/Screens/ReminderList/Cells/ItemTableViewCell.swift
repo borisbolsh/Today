@@ -50,6 +50,8 @@ final class ItemTableViewCell: UITableViewCell {
         contentView.addSubview(doneButton)
         contentView.addSubview(titleLabel)
         contentView.addSubview(dateLabel)
+        
+        accessoryType = .disclosureIndicator
     }
     
     required init?(coder: NSCoder) {
@@ -86,12 +88,12 @@ final class ItemTableViewCell: UITableViewCell {
     }
     
 
-    func configure(with title: String, date: String, isComplete: Bool) {
+    func configure(with title: String, date: String, isComplete: Bool, doneButtonAction: @escaping DoneButtonAction) {
         titleLabel.text = title
         dateLabel.text = date
-        if isComplete {
-            doneButton.setImage(UIImage(systemName: "circle.fill"), for: .normal) 
-        }
+        let image = isComplete ? UIImage(systemName: "circle.fill") : UIImage(systemName: "circle")
+        doneButton.setBackgroundImage(image, for: .normal)
+        self.doneButtonAction = doneButtonAction
     }
     
 }
