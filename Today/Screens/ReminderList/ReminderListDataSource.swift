@@ -9,6 +9,18 @@ import UIKit
 
 class ReminderListDataSource: NSObject {
     private lazy var dateFormatter = RelativeDateTimeFormatter()
+    
+    func update(_ reminder: Reminder, at row: Int) {
+            Reminder.testData[row] = reminder
+    }
+    
+    func reminder(at row: Int) -> Reminder {
+        return Reminder.testData[row]
+    }
+    
+    func add(_ reminder: Reminder) {
+        Reminder.testData.insert(reminder, at: 0)
+    }
 }
 
 extension ReminderListDataSource: UITableViewDataSource {

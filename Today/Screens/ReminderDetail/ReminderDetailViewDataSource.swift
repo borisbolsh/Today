@@ -62,7 +62,6 @@ class ReminderDetailViewDataSource: NSObject {
     
     init(reminder: Reminder) {
         self.reminder = reminder
-        print("Hey")
         super.init()
     }
     
