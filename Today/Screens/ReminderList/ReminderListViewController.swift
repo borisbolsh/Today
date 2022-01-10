@@ -8,24 +8,25 @@
 import UIKit
 
 final class ReminderListViewController: UIViewController {
-
+    
     private let tableView = UITableView()
     private var reminderListDataSource: ReminderListDataSource?
-
+    
+    let segmentedControl: UISegmentedControl = UISegmentedControl(items: ["Today", "Future", "All"])
+    
+    private var filter: ReminderListDataSource.Filter {
+        return ReminderListDataSource.Filter(rawValue: segmentedControl.selectedSegmentIndex) ?? .today
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
         setupTableView()
-        title = "TodayApp"
+        setupSegmentedControl()
+        setupToolbar()
         
-        self.navigationController?.isToolbarHidden = false
-
-        var items = [UIBarButtonItem]()
-
-        items.append( UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTriggered)) )
-
-        self.toolbarItems = items
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -35,13 +36,13 @@ final class ReminderListViewController: UIViewController {
             navigationController.setToolbarHidden(false, animated: animated)
         }
     }
-
+    
     override func viewDidLayoutSubviews() {
-       super.viewDidLayoutSubviews()
-       
-       tableView.frame = view.bounds
-   }
-
+        super.viewDidLayoutSubviews()
+        
+        tableView.frame = view.bounds
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -53,10 +54,10 @@ extension ReminderListViewController: UITableViewDelegate {
         
         let reminder = Reminder.testData[indexPath.row]
         
-        vc.configure(with: reminder){ reminder in
+        vc.configure(with: reminder, editAction: { reminder in
             self.reminderListDataSource?.update(reminder, at: indexPath.row)
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-        }
+            self.tableView.reloadData()
+        })
         
         self.navigationController?.pushViewController(vc, animated: true)
         
@@ -73,11 +74,36 @@ private extension ReminderListViewController {
         tableView.dataSource = reminderListDataSource
         
         self.tableView.delegate = self
-
+        
         tableView.register(ItemTableViewCell.self,
                            forCellReuseIdentifier: ItemTableViewCell.identfier)
         
         tableView.rowHeight = ItemTableViewCell.preferredHeight
+    }
+    
+    func setupSegmentedControl() {
+        
+        segmentedControl.sizeToFit()
+        segmentedControl.selectedSegmentIndex = 0
+        self.navigationItem.titleView = segmentedControl
+        
+        segmentedControl.addTarget(self, action: #selector(segmentControlChanged), for: .valueChanged)
+        
+    }
+    
+    @objc func segmentControlChanged () {
+        reminderListDataSource?.filter = filter
+        tableView.reloadData()
+    }
+    
+    func setupToolbar() {
+        self.navigationController?.isToolbarHidden = false
+        
+        var items = [UIBarButtonItem]()
+        
+        items.append( UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTriggered)) )
+        
+        self.toolbarItems = items
     }
     
 }
@@ -92,18 +118,20 @@ extension ReminderListViewController {
     private func addReminder() {
         let vc = ReminderDetailViewController()
         
-        let reminder = Reminder(title: "New Reminder", dueDate: Date(), notes: "Your note"  )
+        let reminder = Reminder(id: UUID().uuidString, title: "New Reminder", dueDate: Date())
         
         vc.configure(with: reminder, isNew: true, addAction: { reminder in
-            self.reminderListDataSource?.add(reminder)
-            self.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-
+            if let index = self.reminderListDataSource?.add(reminder) {
+                self.tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+            }
+            
         })
-
         
         let navigationController = UINavigationController(rootViewController: vc)
-        
         present(navigationController, animated: true, completion: nil)
         
     }
+    
 }
+
+
