@@ -31,10 +31,10 @@ final class ItemTableViewCell: UITableViewCell {
     
     private let doneButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(systemName: "circle")
-        button.contentVerticalAlignment = .fill
-        button.contentHorizontalAlignment = .fill
-        button.setImage(image, for: .normal)
+//        let image = UIImage(systemName: "circle")
+//        button.contentVerticalAlignment = .fill
+//        button.contentHorizontalAlignment = .fill
+//        button.setImage(image, for: .normal)
         button.tintColor = .systemBlue
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(doneButtonTriggered), for: .touchUpInside)
@@ -102,7 +102,6 @@ final class ItemTableViewCell: UITableViewCell {
 extension ItemTableViewCell {
     
     @objc func doneButtonTriggered() {
-        print("tapped")
         doneButtonAction?()
     }
 }

@@ -11,6 +11,7 @@ final class ReminderListViewController: UIViewController {
     
     private let tableView = UITableView()
     private var reminderListDataSource: ReminderListDataSource?
+    var headerView = ReminderListHeader(frame: .zero)
     
     let segmentedControl: UISegmentedControl = UISegmentedControl(items: ["Today", "Future", "All"])
     
@@ -24,9 +25,18 @@ final class ReminderListViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         setupTableView()
+        setupTableHeaderView()
         setupSegmentedControl()
         setupToolbar()
-        
+        self.refreshProgressView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let radius = view.bounds.size.width * 0.5 * 0.7
+        headerView.progressContainerView.layer.cornerRadius = radius
+        headerView.progressContainerView.layer.masksToBounds = true
+        self.refreshProgressView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +67,7 @@ extension ReminderListViewController: UITableViewDelegate {
         vc.configure(with: reminder, editAction: { reminder in
             self.reminderListDataSource?.update(reminder, at: indexPath.row)
             self.tableView.reloadData()
+            self.refreshProgressView()
         })
         
         self.navigationController?.pushViewController(vc, animated: true)
@@ -70,7 +81,12 @@ private extension ReminderListViewController {
     func setupTableView() {
         view.addSubview(self.tableView)
         
-        reminderListDataSource = ReminderListDataSource()
+        reminderListDataSource = ReminderListDataSource(reminderCompletedAction: { reminderIndex in
+            self.tableView.reloadRows(at: [IndexPath(row: reminderIndex, section: 0)], with: .automatic)
+            self.refreshProgressView()
+        }, reminderDeletedAction: {
+            self.refreshProgressView()
+        })
         tableView.dataSource = reminderListDataSource
         
         self.tableView.delegate = self
@@ -79,6 +95,14 @@ private extension ReminderListViewController {
                            forCellReuseIdentifier: ItemTableViewCell.identfier)
         
         tableView.rowHeight = ItemTableViewCell.preferredHeight
+    }
+    
+    private func setupTableHeaderView() {
+        var size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        size.width = UIScreen.main.bounds.width
+        headerView.frame.size = size
+        
+        tableView.tableHeaderView = headerView
     }
     
     func setupSegmentedControl() {
@@ -94,6 +118,7 @@ private extension ReminderListViewController {
     @objc func segmentControlChanged () {
         reminderListDataSource?.filter = filter
         tableView.reloadData()
+        self.refreshProgressView()
     }
     
     func setupToolbar() {
@@ -123,6 +148,7 @@ extension ReminderListViewController {
         vc.configure(with: reminder, isNew: true, addAction: { reminder in
             if let index = self.reminderListDataSource?.add(reminder) {
                 self.tableView.insertRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+                self.refreshProgressView()
             }
             
         })
@@ -132,6 +158,17 @@ extension ReminderListViewController {
         
     }
     
+    
+    private func refreshProgressView() {
+        guard let percentComplete = reminderListDataSource?.percentComplete else {
+            return
+        }
+        let totalHeight = headerView.progressContainerView.bounds.size.height
+        headerView.heightConstraint?.constant = totalHeight * CGFloat(percentComplete)
+        UIView.animate(withDuration: 0.2) {
+            self.headerView.layoutIfNeeded()
+        }
+    }
 }
 
 
